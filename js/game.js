@@ -58,8 +58,8 @@ function loadCards() {
 
 function setupLanes() {
 
-    const lanes =
-        document.querySelectorAll(".lane");
+   const lanes =
+    document.querySelectorAll(".battle-lane");
 
     lanes.forEach((lane, index) => {
 
