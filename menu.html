@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Main Menu</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>Realm of Towers</h1>
+
+<div id="playerInfo"></div>
+
+<button onclick="goTowerMap()">
+Tower Map
+</button>
+
+<button disabled>
+Deck Builder (Coming Soon)
+</button>
+
+<button disabled>
+Card Book (Coming Soon)
+</button>
+
+<button disabled>
+Store (Coming Soon)
+</button>
+
+<script>
+
+const username =
+localStorage.getItem("rot_username");
+
+const gems =
+localStorage.getItem("rot_gems");
+
+const floor =
+localStorage.getItem("rot_floor");
+
+document.getElementById("playerInfo").innerHTML =
+`
+Player: ${username}<br>
+Gems: ${gems}<br>
+Floor: ${floor}
+`;
+
+function goTowerMap(){
+    window.location.href =
+    "tower-map.html";
+}
+
+</script>
+
+</body>
+</html>
