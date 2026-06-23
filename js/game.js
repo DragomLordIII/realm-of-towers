@@ -9,8 +9,11 @@ let enemyBaseHp = 1000;
 
 const MAX_LANE_UNITS = 10;
 
-const playerUnits = [[], [], [], []];
-const enemyUnits = [[], [], [], []];
+```javascript
+let playerUnits = [[], [], [], []];
+let enemyUnits = [[], [], [], []];
+```
+
 
 const starter =
     localStorage.getItem("rot_starter") || "Slime";
@@ -188,8 +191,10 @@ function startMovementLoop() {
 
     setInterval(() => {
 
-        for (let lane = 0; lane < 4; lane++) {
+        console.log("movement tick");
 
+        for (let lane = 0; lane < 4; lane++) {
+        
             playerUnits[lane].forEach(unit => {
 
                 unit.pos += 1;
