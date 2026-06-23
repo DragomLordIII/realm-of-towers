@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Choose Starter</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>Choose Your Starter Card</h1>
+
+<div class="card-row">
+
+    <div class="card">
+        <h2>Slime</h2>
+        <p>Poison Damage</p>
+        <button onclick="chooseStarter('Slime')">Choose</button>
+    </div>
+
+    <div class="card">
+        <h2>Icicle</h2>
+        <p>Freeze Ability</p>
+        <button onclick="chooseStarter('Icicle')">Choose</button>
+    </div>
+
+    <div class="card">
+        <h2>Campfire</h2>
+        <p>Burn Damage</p>
+        <button onclick="chooseStarter('Campfire')">Choose</button>
+    </div>
+
+</div>
+
+<script>
+function chooseStarter(card){
+
+    localStorage.setItem("rot_starter", card);
+    localStorage.setItem("rot_floor", 1);
+    localStorage.setItem("rot_gems", 100);
+
+    localStorage.setItem(
+        "rot_deck",
+        JSON.stringify([card])
+    );
+
+    window.location.href = "menu.html";
+}
+</script>
+
+</body>
+</html>
