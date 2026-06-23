@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Realm of Towers</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="screen">
+
+<h1>Realm of Towers</h1>
+
+<p>Enter Username</p>
+
+<input id="username" placeholder="Username">
+
+<br><br>
+
+<button onclick="startGame()">Play</button>
+
+</div>
+
+<script>
+
+function startGame(){
+
+    const username =
+    document.getElementById("username").value;
+
+    if(username.length < 3){
+        alert("Username must be 3+ characters");
+        return;
+    }
+
+    localStorage.setItem(
+        "rot_username",
+        username
+    );
+
+    if(
+        !localStorage.getItem(
+            "rot_starter"
+        )
+    ){
+        window.location.href =
+        "starter.html";
+    }
+    else{
+        window.location.href =
+        "menu.html";
+    }
+}
+
+</script>
+
+</body>
+</html>
