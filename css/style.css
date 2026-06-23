@@ -104,12 +104,6 @@ input{
     font-size:18px;
 }
 
-.unit{
-    margin:8px;
-    padding:6px;
-    border-radius:6px;
-    background:#374151;
-}
 
 #battleLog{
     margin:20px auto;
