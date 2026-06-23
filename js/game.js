@@ -1,5 +1,3 @@
-
-
 let energy = 0;
 let selectedCard = null;
 
