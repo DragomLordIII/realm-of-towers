@@ -1,5 +1,5 @@
 
-```javascript
+
 let energy = 0;
 let selectedCard = null;
 
@@ -299,5 +299,4 @@ function log(text) {
         "battleLog"
     ).innerText = text;
 }
-```
 
