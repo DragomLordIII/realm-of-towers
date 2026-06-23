@@ -183,7 +183,7 @@ function startEnemySpawner() {
 
 function startMovementLoop() {
 
-```
+
 setInterval(() => {
 
     for (let lane = 0; lane < 4; lane++) {
@@ -257,7 +257,7 @@ setInterval(() => {
     render();
 
 }, 250);
-```
+
 
 }
 
