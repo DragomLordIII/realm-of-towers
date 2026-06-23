@@ -1,6 +1,5 @@
-```javascript
-// Realm of Towers - Battle Engine v2
 
+```javascript
 let energy = 0;
 let selectedCard = null;
 
@@ -9,11 +8,8 @@ let enemyBaseHp = 1000;
 
 const MAX_LANE_UNITS = 10;
 
-```javascript
 let playerUnits = [[], [], [], []];
 let enemyUnits = [[], [], [], []];
-```
-
 
 const starter =
     localStorage.getItem("rot_starter") || "Slime";
