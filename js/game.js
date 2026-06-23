@@ -1,4 +1,5 @@
-// Realm of Towers - Battle Engine
+```javascript
+// Realm of Towers - Battle Engine v2
 
 let energy = 0;
 let selectedCard = null;
@@ -6,12 +7,15 @@ let selectedCard = null;
 let playerBaseHp = 1000;
 let enemyBaseHp = 1000;
 
+const MAX_LANE_UNITS = 10;
+
 const playerUnits = [[], [], [], []];
 const enemyUnits = [[], [], [], []];
 
-const starter = localStorage.getItem("rot_starter");
+const starter =
+    localStorage.getItem("rot_starter") || "Slime";
 
-// ---------- STARTUP ----------
+// ---------------- STARTUP ----------------
 
 window.onload = () => {
 
@@ -21,17 +25,24 @@ window.onload = () => {
 
     loadCards();
     setupLanes();
+
+    document.getElementById("energy").innerText = energy;
+
     startEnergy();
     startEnemySpawner();
+    startMovementLoop();
+
     render();
 };
 
-// ---------- CARD BAR ----------
+// ---------------- CARDS ----------------
 
 function loadCards() {
 
     const cardBar =
         document.getElementById("cardBar");
+
+    cardBar.innerHTML = "";
 
     const btn =
         document.createElement("button");
@@ -39,7 +50,7 @@ function loadCards() {
     btn.className = "card-button";
 
     btn.innerText =
-        `${starter} (5 Energy)`;
+        starter + " (5 Energy)";
 
     btn.onclick = () => {
 
@@ -48,18 +59,18 @@ function loadCards() {
         document.getElementById(
             "selectedCardText"
         ).innerText =
-        `Selected Card: ${starter}`;
+            "Selected Card: " + starter;
     };
 
     cardBar.appendChild(btn);
 }
 
-// ---------- LANES ----------
+// ---------------- LANES ----------------
 
 function setupLanes() {
 
-   const lanes =
-    document.querySelectorAll(".battle-lane");
+    const lanes =
+        document.querySelectorAll(".battle-lane");
 
     lanes.forEach((lane, index) => {
 
@@ -70,10 +81,9 @@ function setupLanes() {
         });
 
     });
-
 }
 
-// ---------- ENERGY ----------
+// ---------------- ENERGY ----------------
 
 function startEnergy() {
 
@@ -86,20 +96,30 @@ function startEnergy() {
         ).innerText = energy;
 
     }, 1000);
-
 }
 
-// ---------- SUMMON ----------
+// ---------------- SUMMON ----------------
 
 function summonCard(laneIndex) {
 
     if (!selectedCard) {
+
         log("Select a card first.");
         return;
     }
 
     if (energy < 5) {
+
         log("Not enough energy.");
+        return;
+    }
+
+    if (
+        playerUnits[laneIndex].length >=
+        MAX_LANE_UNITS
+    ) {
+
+        log("Lane is full.");
         return;
     }
 
@@ -111,22 +131,23 @@ function summonCard(laneIndex) {
 
     playerUnits[laneIndex].push({
 
-        name: selectedCard,
+        type: selectedCard,
         hp: 100,
-        damage: 10
+        damage: 10,
+        pos: 5
 
     });
 
     log(
-        `${selectedCard} summoned in Lane ${
-            laneIndex + 1
-        }`
+        selectedCard +
+        " summoned in Lane " +
+        (laneIndex + 1)
     );
 
     render();
 }
 
-// ---------- ENEMIES ----------
+// ---------------- ENEMIES ----------------
 
 function startEnemySpawner() {
 
@@ -135,92 +156,147 @@ function startEnemySpawner() {
         const lane =
             Math.floor(Math.random() * 4);
 
+        if (
+            enemyUnits[lane].length >=
+            MAX_LANE_UNITS
+        ) {
+            return;
+        }
+
         enemyUnits[lane].push({
 
-            name: "Goblin",
+            type: "Goblin",
             hp: 30,
-            damage: 5
+            damage: 5,
+            pos: 95
 
         });
 
         log(
-            `Goblin appeared in Lane ${
-                lane + 1
-            }`
+            "Goblin appeared in Lane " +
+            (lane + 1)
         );
 
         render();
 
     }, 5000);
-
 }
 
-// ---------- RENDER ----------
+// ---------------- MOVEMENT ----------------
+
+function startMovementLoop() {
+
+    setInterval(() => {
+
+        for (let lane = 0; lane < 4; lane++) {
+
+            playerUnits[lane].forEach(unit => {
+
+                unit.pos += 1;
+
+                if (unit.pos > 95) {
+
+                    enemyBaseHp -= unit.damage;
+                    unit.hp = 0;
+
+                }
+
+            });
+
+            enemyUnits[lane].forEach(unit => {
+
+                unit.pos -= 1;
+
+                if (unit.pos < 5) {
+
+                    playerBaseHp -= unit.damage;
+                    unit.hp = 0;
+
+                }
+
+            });
+
+            playerUnits[lane] =
+                playerUnits[lane].filter(
+                    u => u.hp > 0
+                );
+
+            enemyUnits[lane] =
+                enemyUnits[lane].filter(
+                    u => u.hp > 0
+                );
+        }
+
+        document.getElementById(
+            "playerBaseHp"
+        ).innerText = playerBaseHp;
+
+        document.getElementById(
+            "enemyBaseHp"
+        ).innerText = enemyBaseHp;
+
+        render();
+
+    }, 250);
+}
+
+// ---------------- RENDER ----------------
 
 function render() {
 
-    for (let i = 0; i < 4; i++) {
+    for (let lane = 0; lane < 4; lane++) {
 
-        const laneDiv =
+        const field =
             document.getElementById(
-                `lane${i}`
+                "lane" + lane
             );
 
-        laneDiv.innerHTML = "";
+        field.innerHTML = "";
 
-        // ENEMIES
-
-        enemyUnits[i].forEach(enemy => {
+        playerUnits[lane].forEach(unit => {
 
             const div =
                 document.createElement("div");
 
-            div.className = "unit";
+            div.className =
+                "unit player-unit";
 
-            div.innerText =
-                `👹 ${enemy.name}
-HP:${enemy.hp}`;
+            div.style.left =
+                unit.pos + "%";
 
-            laneDiv.appendChild(div);
+            div.innerText = "[S]";
+
+            field.appendChild(div);
 
         });
 
-        // PLAYERS
-
-        playerUnits[i].forEach(unit => {
+        enemyUnits[lane].forEach(unit => {
 
             const div =
                 document.createElement("div");
 
-            div.className = "unit";
+            div.className =
+                "unit enemy-unit";
 
-            div.innerText =
-                `🛡 ${unit.name}
-HP:${unit.hp}`;
+            div.style.left =
+                unit.pos + "%";
 
-            laneDiv.appendChild(div);
+            div.innerText = "[G]";
+
+            field.appendChild(div);
 
         });
 
     }
-
-    document.getElementById(
-        "playerBaseHp"
-    ).innerText =
-    playerBaseHp;
-
-    document.getElementById(
-        "enemyBaseHp"
-    ).innerText =
-    enemyBaseHp;
 }
 
-// ---------- LOG ----------
+// ---------------- LOG ----------------
 
 function log(text) {
 
     document.getElementById(
         "battleLog"
     ).innerText = text;
-
 }
+```
+
