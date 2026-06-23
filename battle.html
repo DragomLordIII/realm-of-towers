@@ -1,19 +1,94 @@
+FILE: battle.html
+
+```html
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Battle</title>
+<title>Realm of Towers - Battle</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<h1>Battle System Coming Soon</h1>
+<h1>Training Tower</h1>
 
-<p>You successfully entered the tower.</p>
+<div class="battle-stats">
+
+    <div>
+        Enemy Base HP:
+        <span id="enemyBaseHp">1000</span>
+    </div>
+
+    <div>
+        Energy:
+        <span id="energy">0</span>
+    </div>
+
+    <div>
+        Player Base HP:
+        <span id="playerBaseHp">1000</span>
+    </div>
+
+</div>
+
+<hr>
+
+<h2>Select Card</h2>
+
+<div id="cardBar">
+
+</div>
+
+<hr>
+
+<h2>Battlefield</h2>
+
+<p>
+Click a card, then click a lane.
+</p>
+
+<div id="selectedCardText">
+Selected Card: None
+</div>
+
+<div id="battlefield">
+
+    <div class="lane" data-lane="0">
+        <h3>Lane 1</h3>
+        <div class="lane-units" id="lane0"></div>
+    </div>
+
+    <div class="lane" data-lane="1">
+        <h3>Lane 2</h3>
+        <div class="lane-units" id="lane1"></div>
+    </div>
+
+    <div class="lane" data-lane="2">
+        <h3>Lane 3</h3>
+        <div class="lane-units" id="lane2"></div>
+    </div>
+
+    <div class="lane" data-lane="3">
+        <h3>Lane 4</h3>
+        <div class="lane-units" id="lane3"></div>
+    </div>
+
+</div>
+
+<hr>
+
+<div id="battleLog">
+Battle Started...
+</div>
+
+<br>
 
 <button onclick="window.location.href='menu.html'">
-Return to Menu
+Return To Menu
 </button>
+
+<script src="js/game.js"></script>
 
 </body>
 </html>
+```
