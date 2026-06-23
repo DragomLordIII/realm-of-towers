@@ -183,60 +183,82 @@ function startEnemySpawner() {
 
 function startMovementLoop() {
 
-    setInterval(() => {
+```
+setInterval(() => {
 
-        console.log("movement tick");
+    for (let lane = 0; lane < 4; lane++) {
 
-        for (let lane = 0; lane < 4; lane++) {
-        
-            playerUnits[lane].forEach(unit => {
+        // COMBAT
 
-                unit.pos += 1;
+        playerUnits[lane].forEach(player => {
 
-                if (unit.pos > 95) {
+            let target = enemyUnits[lane].find(enemy =>
+                Math.abs(player.pos - enemy.pos) <= 5
+            );
 
-                    enemyBaseHp -= unit.damage;
-                    unit.hp = 0;
+            if (target) {
+
+                target.hp -= player.damage;
+                player.hp -= target.damage;
+
+            } else {
+
+                player.pos += 1;
+
+                if (player.pos >= 95) {
+
+                    enemyBaseHp -= player.damage;
+                    player.hp = 0;
 
                 }
+            }
 
-            });
+        });
 
-            enemyUnits[lane].forEach(unit => {
+        enemyUnits[lane].forEach(enemy => {
 
-                unit.pos -= 1;
+            let target = playerUnits[lane].find(player =>
+                Math.abs(player.pos - enemy.pos) <= 5
+            );
 
-                if (unit.pos < 5) {
+            if (!target) {
 
-                    playerBaseHp -= unit.damage;
-                    unit.hp = 0;
+                enemy.pos -= 1;
+
+                if (enemy.pos <= 5) {
+
+                    playerBaseHp -= enemy.damage;
+                    enemy.hp = 0;
 
                 }
+            }
 
-            });
+        });
 
-            playerUnits[lane] =
-                playerUnits[lane].filter(
-                    u => u.hp > 0
-                );
+        playerUnits[lane] =
+            playerUnits[lane].filter(
+                unit => unit.hp > 0
+            );
 
-            enemyUnits[lane] =
-                enemyUnits[lane].filter(
-                    u => u.hp > 0
-                );
-        }
+        enemyUnits[lane] =
+            enemyUnits[lane].filter(
+                unit => unit.hp > 0
+            );
+    }
 
-        document.getElementById(
-            "playerBaseHp"
-        ).innerText = playerBaseHp;
+    document.getElementById(
+        "playerBaseHp"
+    ).innerText = playerBaseHp;
 
-        document.getElementById(
-            "enemyBaseHp"
-        ).innerText = enemyBaseHp;
+    document.getElementById(
+        "enemyBaseHp"
+    ).innerText = enemyBaseHp;
 
-        render();
+    render();
 
-    }, 250);
+}, 250);
+```
+
 }
 
 // ---------------- RENDER ----------------
@@ -263,7 +285,15 @@ function render() {
             div.style.left =
                 unit.pos + "%";
 
-            div.innerText = "[S]";
+            if (unit.type === "Campfire") {
+div.innerText = "[C]";
+}
+else if (unit.type === "Icicle") {
+div.innerText = "[I]";
+}
+else {
+div.innerText = "[S]";
+}
 
             field.appendChild(div);
 
